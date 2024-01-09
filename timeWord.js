@@ -28,7 +28,7 @@ function timeWord (time) {
         let formattedMinute;
         
         if(minute < 10) {
-            formattedMinute = 'oh' + minutes[minute];
+            formattedMinute = ' ' + minutes[minute];
         } else {
             formattedMinute = multiplesOfTen[Math.floor(minute / 10)] + (minute % 10 === 0 ? '' : ' ' + minutes[minute % 10]);
         }
