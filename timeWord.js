@@ -1,42 +1,3 @@
-// function timeWord (hh,mm) {
-//     const today = new Date();
-//     const h = today.getHours();
-//     const m = today.getMinutes();
-
-//     const hours = [
-//         'midnight', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'noon'
-//     ];
-
-//     const minutes = [
-//         "oh",  "one", "two", "three", 
-//         "four", "five", "six", "seven", "eight", "nine", 
-//        "ten", "eleven", "twelve", "thirteen", "fourteen", 
-//         "fifteen", "sixteen", "seventeen", 
-//         "eighteen", "nineteen"
-//     ];
-
-//     for (let i = 20; i < 60; i += 10) {
-//         minutes[i] = minutes[i - 10] + ' ' + minutes[i % 10];
-//     }
-
-//     let result = '';
-
-//     if ( h=== 12 && m === 0) {
-//         result = 'noon';
-//     } else {
-//         const period = h < 12 ? 'am' : 'pm';
-//         const formattedHour = hours[h % 12];
-//         const formattedMinute = minutes[m];
-
-//         result = `${formattedHour} ${formattedMinute} ${period}`;
-//     }
-
-//     return result;
-
-// }
-
-
-
 function timeWord (time) {
     const hours = [
         'midnight', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'noon'
@@ -50,27 +11,34 @@ function timeWord (time) {
         "eighteen", "nineteen"
     ];
 
-    for (let i = 20; i < 60; i += 10) {
-        minutes[i] = minutes[i - 10] + ' ' + minutes[i % 10];
-    }
+    const multiplesOfTen = ['','ten', 'twenty', 'thirty', 'forty', 'fifty'];
 
     const [hour, minute] = time.split(':').map(Number);
 
-    let result = '';
+    let results = '';
 
     if (hour === 12 && minute === 0) {
-        result = 'noon';
+        results = 'noon';
     } else if (hour === 0 && minute === 0){
-        result = 'midnight'
+        results = 'midnight'
     } else {
         const period = hour < 12 ? 'am':'pm';
         const formattedHour = hours[hour % 12];
-        const formattedMinute = minutes[minute];
 
-        result = `${formattedHour} ${formattedMinute} ${period}`;
+        let formattedMinute;
+        
+        if(minute < 10) {
+            formattedMinute = 'oh' + minutes[minute];
+        } else {
+            formattedMinute = multiplesOfTen[Math.floor(minute / 10)] + (minute % 10 === 0 ? '' : ' ' + minutes[minute % 10]);
+        }
+        
+        results = `${formattedHour} ${minute < 10 ? 'oh' : ''}${formattedMinute} ${period}`;
         
     }
-    return result;
+    return results;
 }
 
+
 module.exports = timeWord;
+
