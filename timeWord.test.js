@@ -9,7 +9,7 @@ describe('#timeword', () => {
     expect(timeWord('00:00')).toBe('midnight');
   });
 
-  test('00:00 should return midnight', () => {
+  test('12:00 should return noon', () => {
     expect(timeWord('12:00')).toBe('noon');
   });
 
