@@ -109,18 +109,36 @@ describe('authUser Middleware', function() {
         expect(next).toHaveBeenCalled();
       });
     
+      // test('should return 401 Unauthorized if invalid token provided', async function() {
+      //   const req = { body: { _token: 'invalid_token' }};
+      //   const res = {};
+      //   const next = jest.fn();
+
+      //   try{
+      //       await authUser(req,res,next) 
+      //       expect(next).toHaveBeenCalled();
+      //   } catch (err) {
+      //     fail(`Expected authUser to call next, but got error: ${err}`); 
+      //   }
+    
+      // });
+   
+  
+      
+      
       test('should return 401 Unauthorized if invalid token provided', async function() {
         const req = { body: { _token: 'invalid_token' }};
         const res = {};
         const next = jest.fn();
-
-        try{
-            await authUser(req,res,next);
-            fail('Expected an error to be thrown');
-        } catch (err) {
-            expect(err.status).toBe(401);
-            expect(err.message).toBe('Unathorized');
-        }
-    
+      
+        await authUser(req, res, next);
+      
+        expect(next).toHaveBeenCalled();
+        const err = next.mock.calls[0][0]; // Get the error passed to `next`
+      
+        expect(err.status).toBe(401);
+        expect(err.message).toBe('Unauthorized');
       });
+      
+
     });

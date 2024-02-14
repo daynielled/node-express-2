@@ -44,20 +44,52 @@ function requireAdmin(req, res, next) {
  *
  **/
 
+// function authUser(req, res, next) {
+//   try {
+//     const token = req.body._token || req.query._token;
+//     if (token) {
+//       let payload = jwt.decode(token);
+//       req.curr_username = payload.username;
+//       req.curr_admin = payload.admin;
+//     }
+//     next();
+//   } catch (err) {
+//     err.status = 401;
+//     return next(err);
+//   }
+
+
+
 function authUser(req, res, next) {
   try {
     const token = req.body._token || req.query._token;
     if (token) {
       let payload = jwt.decode(token);
-      req.curr_username = payload.username;
-      req.curr_admin = payload.admin;
+   
+      //FIXES BUG 4: Check if payload and username exist before setting req.curr_username
+      if (payload && payload.username) {
+        req.curr_username = payload.username;
+        req.curr_admin = payload.admin;
+      } else {
+        throw new Error('Unauthorized');
+      }
+    } else {
+      throw new Error('Unauthorized');
     }
-    return next();
+    next();
   } catch (err) {
     err.status = 401;
-    return next(err);
+    next(err);
   }
-} // end
+}
+
+
+
+
+// end
+
+
+
 
 module.exports = {
   requireLogin,
